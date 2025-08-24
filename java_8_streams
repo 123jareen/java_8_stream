@@ -140,6 +140,18 @@ public class java_8_streams {
         Optional<Employee> ex23 = employeeList.stream().sorted(Comparator.comparingDouble(Employee::getSalary).reversed()).skip(4).limit(10).findFirst();
         System.out.println(ex23);
 
+              //Imagine you have a list of Employee objects, each with attributes such as name,
+        // department, salary, and joiningDate. Using Java Stream API, design a pipeline
+        // to find the average salary of the employees who joined the company before
+        // the year 2010, grouped by department. Additionally, consider only those
+        // departments where the average salary is above a certain threshold,
+        // let's say $60,000. Ensure that the final result is presented in a
+        // concise and readable manner.
+
+        employeeList.stream().collect(Collectors.groupingBy(Employee::getDepartment, Collectors.averagingDouble(Employee::getSalary)))
+                .entrySet().stream().filter(x->x.getValue()>10000).collect(Collectors.toMap(Map.Entry::getKey,Map.Entry::getValue));
+
+
 
 
 
