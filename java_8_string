@@ -1,0 +1,83 @@
+package org.java8;
+
+import java.awt.*;
+import java.util.*;
+import java.util.List;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
+
+public class java_8_string {
+
+    public static void main(String[] args)
+    {
+        //1st non repeating Charector.
+
+        List<String> str = Arrays.asList("java python java html", "java css html");
+        Character data4 = str.stream()
+                .flatMap(y -> y.chars().mapToObj(c -> (char) c))
+                .collect(Collectors.groupingBy(Function.identity(), LinkedHashMap::new, Collectors.counting()))
+                .entrySet().stream()
+                .filter(k -> k.getValue() == 1).map(k -> k.getKey()).findFirst().get();
+
+
+        // Occurance of each charector
+
+        String str1=new String("I am a java developer");
+         Map<Character, Long> data1 = str1.chars().mapToObj(x -> (char) x).collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+        System.out.println(data1);
+
+        //order by counting
+
+        LinkedHashMap<Character, Long> data2 = str1.chars().mapToObj(x -> (char) x).collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))
+                .entrySet().stream().sorted( Map.Entry.<Character,Long>comparingByValue().reversed())
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (one, two) -> one, LinkedHashMap::new));
+
+        System.out.println(data2);
+
+        List<String> fruits= Arrays.asList("apple","orange","pineapple",
+                "berry","strawberry","kiwi","berry","kiwi");
+        //[iwik, yrreb, iwik, yrrebwarts, yrreb, elppaenip, egnaro, elppa]
+        //reverse list and individual element
+        List<StringBuffer> ten = IntStream.range(0, fruits.size())
+                .mapToObj(i -> new StringBuffer(fruits.get(fruits.size() - 1 - i).toLowerCase()).reverse()).collect(Collectors.toList());
+
+        System.out.println(ten);
+
+        String pali="Malayalam".toLowerCase();
+        String seven = IntStream.range(0, pali.length())
+                .mapToObj(i -> pali.charAt(pali.length() - 1 - i))
+                .map(String::valueOf)
+                .collect(Collectors.joining());
+        System.out.println((pali.equals(seven)?true:false));
+
+        System.out.println(ten);
+
+        //longest string in Array of String
+        String str5="I am a a java developer";
+        Optional<String> eight = Arrays.stream(str5.split(" "))
+                .collect(Collectors.toMap(Function.identity(), String::length,(a,b)->a))
+                .entrySet().stream().max(Comparator.comparingInt(Map.Entry::getValue))
+                .map(xr -> xr.getKey());
+
+
+        //second highest
+        int[] data=new int[]{1,2,5,7,7,88,6,3};
+        //Integer[] data_1=new Integer[]{1,2,5,7,7,88,6,3};
+        Optional<Integer> six = Arrays
+                .stream(data)
+                .boxed()
+                .distinct()
+                .sorted(Comparator.reverseOrder())
+                .skip(1)
+                .findFirst();
+
+        System.out.println(six);
+
+
+
+        System.out.println(data4);
+
+    }
+}
